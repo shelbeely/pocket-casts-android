@@ -307,6 +307,10 @@ abstract class EpisodeDao {
     @Query("SELECT * FROM podcast_episodes WHERE last_playback_interaction_date IS NOT NULL AND last_playback_interaction_date > 0 ORDER BY last_playback_interaction_date DESC LIMIT 1000")
     abstract suspend fun findPlaybackHistoryEpisodes(): List<PodcastEpisode>
 
+    // NOTE: Leading-wildcard LIKE queries cannot utilise column indexes and perform a full table
+    // scan scoped to the podcast.  The LIMIT 50 keeps this acceptable for typical podcast backlogs
+    // (hundreds of episodes).  A future improvement is to add an FTS4/FTS5 virtual table on
+    // title + episode_description, which would require a new Room database migration.
     @Transaction
     @Query(
         """

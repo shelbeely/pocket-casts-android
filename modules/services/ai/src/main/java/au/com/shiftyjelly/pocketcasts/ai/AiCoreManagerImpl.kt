@@ -7,23 +7,25 @@ import com.google.android.gms.genai.GenerativeModel
 import com.google.android.gms.genai.GenerativeModelFutures
 import com.google.android.gms.genai.type.GenerativeBackend
 import com.google.android.gms.genai.type.content
-import com.google.android.gms.tasks.Tasks
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.guava.await
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
  * Production implementation of [AiCoreManager] backed by Android AICore (Gemini Nano on-device).
  *
- * On creation it checks model availability on a background thread via the
- * [com.google.android.gms.genai] SDK.  If the model is downloadable and the device is on Wi-Fi it
- * triggers the download automatically.  All state changes are reflected in [availability].
+ * On creation it checks model availability asynchronously on [Dispatchers.IO].  If the model is
+ * downloadable and the device is on Wi-Fi it triggers the download automatically.  All state
+ * changes are reflected in [availability].
  *
  * Requires the `play-services-genai-inferencing` Gradle dependency and a device running
  * Android 14 (API 34) or later that supports Android AICore.
@@ -38,18 +40,20 @@ class AiCoreManagerImpl @Inject constructor(
     private var generativeModel: GenerativeModel? = null
 
     init {
-        checkAvailability()
+        // Availability check is performed on a background thread to avoid blocking the calling
+        // (typically main) thread during dependency injection.
+        CoroutineScope(Dispatchers.IO).launch { checkAvailability() }
     }
 
-    private fun checkAvailability() {
+    private suspend fun checkAvailability() {
         try {
             val model = GenerativeModel.builder()
                 .setBackend(GenerativeBackend.aiCore())
                 .build()
             generativeModel = model
 
-            val availability = Tasks.await(model.checkAvailability())
-            when (availability) {
+            val status = model.checkAvailability().await()
+            when (status) {
                 com.google.android.gms.genai.type.AvailabilityStatus.AVAILABLE -> {
                     _availability.value = AiAvailability.Available
                 }

@@ -47,6 +47,10 @@ class EpisodeSearchHandler @Inject constructor(
                 .toObservable()
 
             Observable.mergeDelayError(localSearch, remoteSearch)
+                // Accumulate results from both sources as they arrive, merging uuid lists.
+                // The seed `noSearchResult` (searchUuids == null) is skipped via skip(1) below.
+                // When an emitted SearchResult has a null uuid list it represents an error/empty
+                // result and the accumulated state is preserved unchanged.
                 .scan(noSearchResult) { accumulated, next ->
                     if (next.searchUuids == null) {
                         accumulated
