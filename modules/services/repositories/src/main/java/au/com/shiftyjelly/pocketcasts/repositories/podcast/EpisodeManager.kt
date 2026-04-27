@@ -130,4 +130,10 @@ interface EpisodeManager {
     suspend fun updateDownloadUrl(episode: PodcastEpisode): String?
 
     suspend fun getAllPodcastEpisodes(pageLimit: Int): Flow<Pair<PodcastEpisode, Int>>
+
+    suspend fun searchInPodcast(podcastUuid: String, query: String): List<PodcastEpisode>
+
+    fun searchInPodcastBlocking(podcastUuid: String, query: String): List<PodcastEpisode>
+
+    suspend fun findRecentUnlistenedEpisodes(podcastUuid: String, limit: Int = 5): List<PodcastEpisode>
 }

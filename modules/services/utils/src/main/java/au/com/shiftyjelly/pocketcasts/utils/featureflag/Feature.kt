@@ -248,6 +248,30 @@ enum class Feature(
         hasFirebaseRemoteFlag = true,
         hasDevToggle = true,
     ),
+    GEMINI_NANO_AI(
+        key = "gemini_nano_ai",
+        title = "Gemini Nano on-device AI (AICore)",
+        defaultValue = isDebugOrPrototypeBuild,
+        tier = FeatureTier.Free,
+        hasFirebaseRemoteFlag = true,
+        hasDevToggle = true,
+    ),
+    TLDL_CATCHUP_SUMMARY(
+        key = "tldl_catchup_summary",
+        title = "TLDL: Too Long Didn't Listen catch-up summaries",
+        defaultValue = isDebugOrPrototypeBuild,
+        tier = FeatureTier.Plus(),
+        hasFirebaseRemoteFlag = true,
+        hasDevToggle = true,
+    ),
+    AI_EPISODE_SEARCH(
+        key = "ai_episode_search",
+        title = "AI-powered in-podcast episode search",
+        defaultValue = isDebugOrPrototypeBuild,
+        tier = FeatureTier.Free,
+        hasFirebaseRemoteFlag = true,
+        hasDevToggle = true,
+    ),
 }
 
 sealed class FeatureTier {

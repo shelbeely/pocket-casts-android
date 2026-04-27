@@ -307,6 +307,43 @@ abstract class EpisodeDao {
     @Query("SELECT * FROM podcast_episodes WHERE last_playback_interaction_date IS NOT NULL AND last_playback_interaction_date > 0 ORDER BY last_playback_interaction_date DESC LIMIT 1000")
     abstract suspend fun findPlaybackHistoryEpisodes(): List<PodcastEpisode>
 
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM podcast_episodes
+        WHERE podcast_id = :podcastUuid
+          AND (title LIKE '%' || :query || '%' OR episode_description LIKE '%' || :query || '%')
+        ORDER BY published_date DESC
+        LIMIT 50
+        """,
+    )
+    abstract suspend fun searchInPodcast(podcastUuid: String, query: String): List<PodcastEpisode>
+
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM podcast_episodes
+        WHERE podcast_id = :podcastUuid
+          AND (title LIKE '%' || :query || '%' OR episode_description LIKE '%' || :query || '%')
+        ORDER BY published_date DESC
+        LIMIT 50
+        """,
+    )
+    abstract fun searchInPodcastBlocking(podcastUuid: String, query: String): List<PodcastEpisode>
+
+    @Transaction
+    @Query(
+        """
+        SELECT * FROM podcast_episodes
+        WHERE podcast_id = :podcastUuid
+          AND playing_status != 2
+          AND archived = 0
+        ORDER BY published_date DESC
+        LIMIT :limit
+        """,
+    )
+    abstract suspend fun findRecentUnlistenedEpisodes(podcastUuid: String, limit: Int): List<PodcastEpisode>
+
     @Update
     abstract fun updateBlocking(episode: PodcastEpisode)
 

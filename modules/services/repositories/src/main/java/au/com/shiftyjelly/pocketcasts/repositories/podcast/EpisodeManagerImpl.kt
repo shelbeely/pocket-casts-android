@@ -974,4 +974,13 @@ class EpisodeManagerImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun searchInPodcast(podcastUuid: String, query: String): List<PodcastEpisode> =
+        episodeDao.searchInPodcast(podcastUuid, query)
+
+    override fun searchInPodcastBlocking(podcastUuid: String, query: String): List<PodcastEpisode> =
+        episodeDao.searchInPodcastBlocking(podcastUuid, query)
+
+    override suspend fun findRecentUnlistenedEpisodes(podcastUuid: String, limit: Int): List<PodcastEpisode> =
+        episodeDao.findRecentUnlistenedEpisodes(podcastUuid, limit)
 }

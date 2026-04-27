@@ -2754,4 +2754,18 @@
     <!-- A label under the happy face emoji. A user will be redirected to leave a review after tapping it. -->
     <string name="app_rating_yes_label">Yes!</string>
     <string name="offline_icon_content_description">Offline icon</string>
+
+    <!-- AI / TLDL / Episode Search strings -->
+    <string name="ai_catch_me_up_button">✨ Catch me up (%d missed)</string>
+    <string name="ai_tldl_title">Too Long Didn\'t Listen</string>
+    <string name="ai_tldl_subtitle">Here\'s what you missed in the last %d episodes</string>
+    <string name="ai_tldl_mark_all_listened">Mark all as listened</string>
+    <string name="ai_tldl_change_count">Change episode count</string>
+    <string name="ai_preparing">Preparing on-device AI…</string>
+    <string name="ai_downloading">Downloading AI model…</string>
+    <string name="ai_not_supported">On-device AI is not available on this device</string>
+    <string name="ai_copy_summary">Copy summary</string>
+    <string name="ai_episode_search_enhanced">AI-enhanced</string>
+    <string name="ai_episode_search_hint">Search episodes in this podcast</string>
+    <string name="transcript_summary_title">Episode Summary</string>
 </resources>

@@ -60,6 +60,7 @@ wordpress-lint = "2.2.0"
 work = "2.11.2"
 credentials = "1.6.0"
 google-id = "1.2.0"
+play-services-genai = "0.0.1-exp01"
 
 [libraries]
 # About Libraries
@@ -294,6 +295,7 @@ material-dialogs = "com.afollestad.material-dialogs:core:3.3.0"
 material-progressbar = "me.zhanghai.android.materialprogressbar:library:1.6.1"
 play-auth = "com.google.android.gms:play-services-auth:21.5.1"
 play-cast = "com.google.android.gms:play-services-cast-framework:22.3.1"
+play-genai-inferencing = { module = "com.google.android.gms:play-services-genai-inferencing", version.ref = "play-services-genai" }
 play-review = "com.google.android.play:review-ktx:2.0.2"
 play-wearable = "com.google.android.gms:play-services-wearable:19.0.0"
 reorderable = "sh.calvin.reorderable:reorderable:3.0.0"
